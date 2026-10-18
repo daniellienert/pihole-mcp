@@ -89,7 +89,7 @@ Docker secrets are supported as a fallback: `/run/secrets/<name>_password` (lowe
 
 | Tool | Description |
 |---|---|
-| `pihole_query_log` | Fetch query log with filters (limit, time range, client, domain, status) |
+| `pihole_query_log` | Fetch query log with filters (limit, time range, client IP or name, domain, status) |
 | `pihole_allow_domain` | Add to allowlist (auto-detects exact vs regex) |
 | `pihole_deny_domain` | Add to denylist (auto-detects exact vs regex) |
 | `pihole_list_allowlist` | List all allowlist entries (exact + regex merged) |

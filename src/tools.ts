@@ -37,13 +37,15 @@ export const toolDefs: ToolDef[] = [
       limit:  z.number().int().positive().max(10000).optional(),
       from:   z.number().int().optional(),
       until:  z.number().int().optional(),
-      client: z.string().optional(),
+      client: z.string().optional().describe('Client IP address (wildcards allowed, e.g. 192.168.1.*).'),
+      client_name: z.string().optional().describe('Client hostname (wildcards allowed).'),
       domain: z.string().optional(),
       status: z.string().optional(),
     }),
     handler: async (args) => getClient(args.instance)
       .queries({ limit: args.limit, from: args.from, until: args.until,
-                 client: args.client, domain: args.domain, status: args.status }),
+                 client: args.client, clientName: args.client_name,
+                 domain: args.domain, status: args.status }),
   },
   {
     name: 'pihole_allow_domain',
