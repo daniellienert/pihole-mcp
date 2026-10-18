@@ -86,7 +86,8 @@ export class PiholeClient {
     if (opts.limit !== undefined)  qs.set('length', String(opts.limit));
     if (opts.from !== undefined)   qs.set('from',   String(opts.from));
     if (opts.until !== undefined)  qs.set('until',  String(opts.until));
-    if (opts.client)               qs.set('client', opts.client);
+    if (opts.client)               qs.set('client_ip', opts.client);
+    if (opts.clientName)           qs.set('client_name', opts.clientName);
     if (opts.domain)               qs.set('domain', opts.domain);
     if (opts.status)               qs.set('status', opts.status);
     const q = qs.toString();
