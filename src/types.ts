@@ -31,6 +31,13 @@ export interface GroupOpts {
   comment?: string;
 }
 
+/** Options for client management operations. */
+export interface ClientOpts {
+  client?: string;
+  comment?: string;
+  groups?: number[];
+}
+
 // Regex metachars that NEVER appear in plain DNS labels.
 // Note: '.' is intentionally excluded — every legitimate domain has dots.
 // A real Pi-hole regex pattern always contains at least one of these.

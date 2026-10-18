@@ -1,6 +1,6 @@
 import { request, Agent, Dispatcher } from 'undici';
 import { looksLikeRegex } from './types.js';
-import type { PiholeInstanceConfig, PiholeSession, QueryOpts, GroupOpts } from './types.js';
+import type { PiholeInstanceConfig, PiholeSession, QueryOpts, GroupOpts, ClientOpts } from './types.js';
 
 const SESSION_TTL_MS = 4 * 60 * 1000;
 
@@ -214,6 +214,28 @@ export class PiholeClient {
       return this.call('DELETE', `/api/groups/${encodeURIComponent(opts.name)}`);
     }
     throw new Error(`unknown group action: ${action}`);
+  }
+
+  async clients(action: string, opts: ClientOpts = {}) {
+    if (action === 'list') return this.call('GET', '/api/clients');
+    if (!opts.client) throw new Error(`client ${action} requires client`);
+    const path = `/api/clients/${encodeURIComponent(opts.client)}`;
+    if (action === 'add') {
+      return this.call('POST', '/api/clients', {
+        client: opts.client, comment: opts.comment ?? null, groups: opts.groups ?? [0],
+      });
+    }
+    if (action === 'update') {
+      // PUT is a full replace: read first so omitted fields keep their current values.
+      const current = (await this.call('GET', path))?.clients?.[0];
+      if (!current) throw new Error(`[${this.cfg.name}] client not found: ${opts.client}`);
+      return this.call('PUT', path, {
+        comment: opts.comment !== undefined ? opts.comment : (current.comment ?? null),
+        groups:  opts.groups  !== undefined ? opts.groups  : (current.groups ?? [0]),
+      });
+    }
+    if (action === 'delete') return this.call('DELETE', path);
+    throw new Error(`unknown client action: ${action}`);
   }
 
   /** Detect deny-exact entries that look like regex (likely miscategorized). */
