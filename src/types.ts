@@ -19,6 +19,7 @@ export interface QueryOpts {
   from?: number;
   until?: number;
   client?: string;
+  clientName?: string;
   domain?: string;
   status?: string;
 }
